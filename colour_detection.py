@@ -17,11 +17,18 @@ while True:
     lower_red = np.array([0, 120, 70])
     upper_red = np.array([10, 255, 255])
     mask_red = cv2.inRange(hsv, lower_red, upper_red)
+    
+    lower_green = np.array([40, 50, 50])
+    upper_green = np.array([80, 255, 255])
+    mask_green = cv2.inRange(hsv, lower_green, upper_green)
 
     if (time.time() - last_print) >= 1:
         if cv2.countNonZero(mask_red) > 500:
             print("Red detected")
             arduino.write(b'R')
+        elif cv2.countNonZero(mask_green) > 500:
+            print("Green detected")
+            arduino.write(b'G')
         else:
             print("No colour detected")
             arduino.write(b'X')
