@@ -1,8 +1,10 @@
 import cv2
 import numpy as np
 import time
+import serial
 
 cap = cv2.VideoCapture(0)
+arduino = serial.Serial(port='/dev/cu.usbmodem11201', baudrate=9600, timeout=1)
 
 last_print = time.time()
 while True:
@@ -19,8 +21,10 @@ while True:
     if (time.time() - last_print) >= 1:
         if cv2.countNonZero(mask_red) > 500:
             print("Red detected")
+            arduino.write(b'R')
         else:
             print("No colour detected")
+            arduino.write(b'X')
         last_print = time.time()
     
     cv2.imshow("Camera", frame)
